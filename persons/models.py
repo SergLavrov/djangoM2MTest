@@ -13,7 +13,6 @@ you cannot alter to or from M2M fields, or add or remove through= on M2M fields
 https://stackoverflow.com/questions/26927705/django-migration-error-you-cannot-alter-to-or-from-m2m-fields-or-add-or-remove
 '''
 
-
 # 1.
 # Создаем СКВОЗНУЮ МОДЕЛЬ и запускаем (но пока не помещаем свойство "through"
 # в поле Group.members): "py manage.py makemigrations"
