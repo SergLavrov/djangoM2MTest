@@ -19,6 +19,18 @@ class RegisterForm(forms.ModelForm):
             raise forms.ValidationError('Пароли не совпадают')
         return confirm_password
 
+    def user_exists(self):
+        username = self.cleaned_data['username']
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError('Пользователь с таким именем уже существует')
+        return username
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError('Пользователь с таким Email уже существует')
+        return email
+
     class Meta:
         model = User
         fields = ['username', 'email', 'password']
