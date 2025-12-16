@@ -18,8 +18,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import RedirectView
 
+from django.conf.urls.static import static
+from django.conf import settings
+
 urlpatterns = [
-    path('', RedirectView.as_view(url='product/', permanent=True)),
+    path('', RedirectView.as_view(url='reg/', permanent=True)),
     path('admin/', admin.site.urls),
-    path('reg/', include('userRegLog.urls')),
+    # path('reg/', include('userRegLog.urls')),
+    # path('reg/', include('userQueryAjax.urls')),
+    # path('reg/', include('userRegModal.urls')),
+    path('reg/', include('userRegModal4.urls')),
 ]

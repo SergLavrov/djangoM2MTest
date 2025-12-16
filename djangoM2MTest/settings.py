@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import os
 from pathlib import Path
 
+# Для использования jQuery
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -40,6 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'persons',
     'userRegLog',
+    'userQueryAjax',
+    'userRegModal',
+    'userRegModal4',
 ]
 
 MIDDLEWARE = [
@@ -57,8 +63,7 @@ ROOT_URLCONF = 'djangoM2MTest.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -106,13 +111,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
 # LANGUAGE_CODE = 'en-us'
 LANGUAGE_CODE = 'ru-ru'    # Для того чтобы ошибки при регистрации и т.д. показывались на русском языке!!!
-# LANGUAGE_CODE = 'ru'
+
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
@@ -124,6 +128,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+# Для подключения статического "ВНЕШНЕГО ФАЙЛА" - script.js
+# STATICFILES_DIRS = os.path.join(BASE_DIR, 'static'),
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+# Директория, куда будут собираться статические файлы при выполнении collectstatic
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static_collected')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
