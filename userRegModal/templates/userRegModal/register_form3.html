@@ -1,0 +1,136 @@
+{#{% extends 'userRegModal/home3.html' %}#}
+{##}
+{#{% block content %}#}
+
+<!-- P.S. пустой action="" значит обработка идет по этому же url-адресу !!!-->
+{#    <form action="{% url 'register' %}" method="post">#}
+    <form action="" method="post">
+      {% csrf_token %}
+
+      {% for field in form %}
+{#  2.2 Для "стилизации" ФОРМЫ обернем ее в class="form-group !!!#}
+      <div class="form-group">
+        <label for="">{{ field.label }}</label>
+          {{ field }}
+{#         У каждого field, т.е. у каждого элемента объекта Form есть свои ошибки/errors  #}
+{#         При form_invalid(form), т.е. если ОШИБКИ ЕСТЬ --> выведем их:#}
+        {% if field.errors %}
+          {{ field.errors }}
+        {% endif %}
+      </div>
+    {% endfor %}
+
+{#      <table>#}
+{#        <div class="form-group mb-3">#}
+{#         Используя "as_table" выводятся ровные поля формы для ввода ввиде Таблицы !#}
+{#          {{ form.as_table }}#}
+{#        {{ form.as_p }}#}
+{#        {{ form }}#}
+{#        </div>#}
+{#      </table>#}
+      <button type="submit" class="btn btn-secondary">Сохранить</button>
+    </form>
+
+{#{% endblock %}#}
+
+
+<!-- ВАЖНО: <script> НУЖНО разместить на "Главной странице" внизу перед тегом </body> -->
+<!-- ОСНОВНОЙ ВАРИАНТ - где при ПОВТОРНОЙ ОБРАБОТКЕ ошибок в МОДАЛЬНОМ ОКНЕ - окно НЕ закрывается !!! -->
+{#    <script>#}
+{##}
+{#        $('#regModal3').click(function (event) {#}
+{#            event.preventDefault();#}
+{##}
+{#            let registerUrl = $(this).data('url');#}
+{#            let csrfToken = $(this).data('csrf-token');#}
+{##}
+{#            function bindFormSubmit() {#}
+{#                $('#registerModal form').submit(function (event) {#}
+{#                    event.preventDefault();#}
+{##}
+{#                    let formData = $(this).serialize();#}
+{##}
+{#                    $.ajax({#}
+{#                        url: registerUrl,#}
+{#                        type: 'POST',#}
+{#                        data: formData,#}
+{#                        headers: {#}
+{#                            'X-CSRFToken': csrfToken,#}
+{#                            'X-Requested-With': 'XMLHttpRequest'#}
+{#                        },#}
+{#                        success: function (response) {#}
+{#                            if (response.indexOf('alert-danger') === -1)#}
+{#                            {#}
+{#                                location.reload();   // Успешная регистрация !#}
+{#                            } else {#}
+{#                              $('#registerModal .modal-body').html(response); // Ошибки !#}
+{#                                bindFormSubmit();#}
+{#                            }#}
+{#                        },#}
+{#                        error: function () {#}
+{#                            alert('Ошибка при обработке запроса.');#}
+{#                        }#}
+{#                    });#}
+{#                });#}
+{#            }#}
+{##}
+{#            $.ajax({#}
+{#                url: registerUrl,#}
+{#                type: 'GET',#}
+{#                success: function (response) {#}
+{#                    $('#registerModal .modal-body').html(response);#}
+{#                    $('#registerModal').modal('show');#}
+{#                    bindFormSubmit();#}
+{#                },#}
+{#                error: function () {#}
+{#                    alert('Ошибка при загрузке формы.');#}
+{#                }#}
+{#            });#}
+{#        });#}
+{##}
+{#    </script>#}
+
+
+<!-- Рабочий вариант, НО при ПОВТОРНОЙ ОБРАБОТКЕ ошибок в МОДАЛЬНОМ ОКНЕ - окно закрывается и переходит
+                      в форму БЕЗ модалки !!! -->
+{#    <script>#}
+{#        $('#regModal3').click(function (event) {#}
+{#            event.preventDefault();#}
+{#            let registerUrl = $(this).data('url');#}
+{#            let csrfToken = $(this).data('csrf-token');#}
+{#            // Загрузка формы в модальное окно#}
+{#            $.ajax({#}
+{#                url: registerUrl,#}
+{#                type: 'GET',#}
+{#                success: function (response) {#}
+{#                    $('#registerModal .modal-body').html(response);#}
+{#                    $('#registerModal').modal('show');#}
+{#                    // Обработка отправки формы#}
+{#                    $('#registerModal form').submit(function (event) {#}
+{#                        event.preventDefault();#}
+{#                        let formData = $(this).serialize();#}
+{#                        $.ajax({#}
+{#                            url: registerUrl,#}
+{#                            type: 'POST',#}
+{#                            data: formData + '&csrfmiddlewaretoken=' + csrfToken,#}
+{#                            success: function (response) {#}
+{#                                if (response.indexOf('alert-danger') === -1) {#}
+{#                                    location.reload(); // Успешная регистрация#}
+                                    {#alert('Вы успешно зарегистрированы !')#}
+                                    {#$('#registerModal form').reset(); // При Успешной регистрации - reset формы !#}
+{#                                } else {#}
+{#                                    $('#registerModal .modal-body').html(response); // Ошибки#}
+{#                                }#}
+{#                            },#}
+{#                            error: function () {#}
+{#                                alert('Ошибка при обработке запроса.');#}
+{#                            }#}
+{#                        });#}
+{#                    });#}
+{#                },#}
+{#                error: function () {#}
+{#                    alert('Ошибка при загрузке формы.');#}
+{#                }#}
+{#            });#}
+{#        });#}
+{#    </script>#}

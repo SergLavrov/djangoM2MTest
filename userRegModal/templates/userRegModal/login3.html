@@ -1,0 +1,381 @@
+{#Для ВАРИАНТа "А"#}
+{#<form method="post" action="{% url 'login' %}">#}
+{#    {% csrf_token %}#}
+{#    <div class="form-group">#}
+{#        {{ form.username.label_tag }}#}
+{#        {{ form.username }}#}
+{#    </div>#}
+{#    <div class="form-group">#}
+{#        {{ form.password.label_tag }}#}
+{#        {{ form.password }}#}
+{#    </div>#}
+{#    {% if form.errors %}#}
+{#        <div class="alert alert-danger">#}
+{#            {{ form.errors }}#}
+{#        </div>#}
+{#    {% endif %}#}
+{#    <button type="submit" class="btn btn-primary">Войти</button>#}
+{#</form>#}
+
+
+<form action="{% url 'login' %}" method="post">
+  {% csrf_token %}
+
+   {{ form.as_p }}
+
+  <button type="submit" class="btn btn-secondary">Войти</button>
+</form>
+
+
+{#<script>#}
+{#    // Получаем CSRF-токен из cookie#}
+{#    function getCookie(name) {#}
+{#        let cookieValue = null;#}
+{#        if (document.cookie && document.cookie !== '') {#}
+{#            const cookies = document.cookie.split(';');#}
+{#            for (let i = 0; i < cookies.length; i++) {#}
+{#                const cookie = cookies[i].trim();#}
+{#                if (cookie.substring(0, name.length + 1) === (name + '=')) {#}
+{#                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));#}
+{#                    break;#}
+{#                }#}
+{#            }#}
+{#        }#}
+{#        return cookieValue;#}
+{#    }#}
+{##}
+{#    const csrftoken = getCookie('csrftoken');#}
+{##}
+{#    // Автоматически добавляем CSRF во все POST-запросы#}
+{#    $.ajaxSetup({#}
+{#        beforeSend: function (xhr, settings) {#}
+{#            if (!(/^GET|HEAD|OPTIONS|TRACE$/i.test(settings.type))) {#}
+{#                xhr.setRequestHeader("X-CSRFToken", csrftoken);#}
+{#            }#}
+{#        }#}
+{#    });#}
+{##}
+{#    $('#logModal3').click(function (event) {#}
+{#        event.preventDefault();#}
+{#        let loginUrl = $(this).data('url');#}
+{##}
+{#        function bindFormSubmit() {#}
+{#            $('#loginModal form').submit(function (event) {#}
+{#                event.preventDefault();#}
+{#                let formData = $(this).serialize();#}
+{##}
+{#                $.ajax({#}
+{#                    url: loginUrl,#}
+{#                    type: 'POST',#}
+{#                    data: formData,#}
+{#                    dataType: 'json',#}
+{#                    success: function (response) {#}
+{#                        if (response.success) {#}
+{#                            location.reload();#}
+{#                        } else {#}
+{#                            $('#loginModal .modal-body').html(response.html);#}
+{#                            bindFormSubmit();#}
+{#                        }#}
+{#                    },#}
+{#                    error: function () {#}
+{#                        alert('Ошибка при входе в систему.');#}
+{#                    }#}
+{#                });#}
+{#            });#}
+{#        }#}
+{##}
+{#        $.ajax({#}
+{#            url: loginUrl,#}
+{#            type: 'GET',#}
+{#            success: function (response) {#}
+{#                $('#loginModal .modal-body').html(response);#}
+{#                $('#loginModal').modal('show');#}
+{#                bindFormSubmit();#}
+{#            },#}
+{#            error: function () {#}
+{#                alert('Ошибка при загрузке формы.');#}
+{#            }#}
+{#        });#}
+{#    });#}
+{#</script>#}
+
+{#Для ВАРИАНТа "А"#}
+{#<script>#}
+{##}
+{#    $('#logModal3').click(function (event) {#}
+{#        event.preventDefault();#}
+{##}
+{#        let loginUrl = $(this).data('url');#}
+{#        let csrfToken = $(this).data('csrf-token');#}
+{##}
+{#        function bindFormSubmit() {#}
+{#            $('#loginModal form').submit(function (event) {#}
+{#                event.preventDefault();#}
+{##}
+{#                let formData = $(this).serialize();#}
+{##}
+{#                $.ajax({#}
+{#                    url: loginUrl,#}
+{#                    type: 'POST',#}
+{#                    data: formData,#}
+{#                    headers: {#}
+{#                        'X-CSRFToken': csrfToken,#}
+{#                        'X-Requested-With': 'XMLHttpRequest'#}
+{#                    },#}
+{#                    success: function (response) {#}
+{#                        if (response.success) {#}
+{#                            location.reload();   // Успешный вход#}
+{#                        } else {#}
+{#                            // Ошибки: можно красиво вывести#}
+{#                            let errors = JSON.parse(response.errors);#}
+{#                            let errorHtml = '<div class="alert alert-danger">';#}
+{#                            for (let field in errors) {#}
+{#                                errors[field].forEach(err => {#}
+{#                                    errorHtml += `<p>${err.message}</p>`;#}
+{#                                });#}
+{#                            }#}
+{#                            errorHtml += '</div>';#}
+{#                            $('#loginModal .modal-body').prepend(errorHtml);#}
+{#                        }#}
+{#                    },#}
+{#                    error: function () {#}
+{#                        alert('Ошибка при входе в систему.');#}
+{#                    }#}
+{#                });#}
+{#            });#}
+{#        }#}
+{##}
+{#        $.ajax({#}
+{#            url: loginUrl,#}
+{#            type: 'GET',#}
+{#            success: function (response) {#}
+{#                $('#loginModal .modal-body').html(response.form_html);#}
+{#                $('#loginModal').modal('show');#}
+{#                bindFormSubmit();#}
+{#            },#}
+{#            error: function () {#}
+{#                alert('Ошибка при загрузке формы.');#}
+{#            }#}
+{#        });#}
+{#    });#}
+{##}
+{#</script>#}
+
+
+<!-- Как это работает
+При клике на кнопку → AJAX GET загружает форму в модалку.
+
+При сабмите → AJAX POST отправляет данные.
+
+Django возвращает JSON:
+{'success': True} → страница перезагружается.
+{'success': False, 'html': ...} → ошибки рендерятся прямо в модалке.
+
+Всё согласовано: JS ждёт JSON, сервер отдаёт JSON.
+
+ВАЖНО:
+В нашем случае НИЧЕГО дополнительного в forms.py прописывать не нужно !!!
+
+Для авторизации используется стандартный AuthenticationForm из django.contrib.auth.forms.
+
+Этот класс уже умеет:
+- проверять логин/пароль,
+- валидировать пользователя,
+- возвращать объект пользователя через form.get_user().
+
+То есть весь функционал для логина уже есть "из коробки" !!!
+ -->
+{#<script>#}
+{#    $('#logModal3').click(function (event) {#}
+{#        event.preventDefault();#}
+{##}
+{#        let loginUrl = $(this).data('url');#}
+{#        let csrfToken = $(this).data('csrf-token');#}
+{##}
+{#        function bindFormSubmit() {#}
+{#            $('#loginModal form').submit(function (event) {#}
+{#                event.preventDefault();#}
+{##}
+{#                let formData = $(this).serialize();#}
+{##}
+{#                $.ajax({#}
+{#                    url: loginUrl,#}
+{#                    type: 'POST',#}
+{#                    data: formData,#}
+{#                    headers: {#}
+{#                        'X-CSRFToken': csrfToken,#}
+                        {#'X-Requested-With': 'XMLHttpRequest'#}
+{#                    },#}
+{#                    dataType: 'json',   // <--- важно!#}
+{#                    success: function (response) {#}
+{#                        if (response.success) {#}
+{#                            location.reload();#}
+{#                        } else {#}
+{#                            $('#loginModal .modal-body').html(response.html);#}
+{#                            bindFormSubmit();#}
+{#                        }#}
+{#                    },#}
+{#                    error: function () {#}
+{#                        alert('Ошибка при входе в систему.');#}
+{#                    }#}
+{#                });#}
+{#            });#}
+{#        }#}
+{##}
+{#        $.ajax({#}
+{#            url: loginUrl,#}
+{#            type: 'GET',#}
+{#            success: function (response) {#}
+{#                $('#loginModal .modal-body').html(response);#}
+{#                $('#loginModal').modal('show');#}
+{#                bindFormSubmit();#}
+{#            },#}
+{#            error: function () {#}
+{#                alert('Ошибка при загрузке формы.');#}
+{#            }#}
+{#        });#}
+{#    });#}
+{#</script>#}
+
+
+
+{#Для ВАРИАНТа "B"#}
+{#<script>#}
+{#    $('#logModal3').click(function (event) {#}
+{#        event.preventDefault();#}
+{##}
+{#        let loginUrl = $(this).data('url');#}
+{#        let csrfToken = $(this).data('csrf-token');#}
+{##}
+{#        function bindFormSubmit() {#}
+{#            $('#loginModal form').submit(function (event) {#}
+{#                event.preventDefault();#}
+{##}
+{#                let formData = $(this).serialize();#}
+{##}
+{#                $.ajax({#}
+{#                    url: loginUrl,#}
+{#                    type: 'POST',#}
+{#                    data: formData,#}
+{#                    headers: {#}
+{#                        'X-CSRFToken': csrfToken,#}
+{#                        'X-Requested-With': 'XMLHttpRequest'#}
+{#                    },#}
+{#                    success: function (response) {#}
+                        {#if (response.indexOf('alert-danger') === -1) {  // Успешный вход !#}
+{#                        if (response.success) {                             // Успешный вход ! Можно так !#}
+{#                            location.reload();#}
+{#                        } else {#}
+{#                            $('#loginModal .modal-body').html(response.html);    // Ошибки !#}
+{#                            bindFormSubmit();#}
+{#                        }#}
+{#                    },#}
+{#                    error: function () {#}
+{#                        alert('Ошибка при входе в систему.');#}
+{#                    }#}
+{#                });#}
+{#            });#}
+{#        }#}
+{##}
+{#        $.ajax({#}
+{#            url: loginUrl,#}
+{#            type: 'GET',#}
+{#            success: function (response) {#}
+{#                $('#loginModal .modal-body').html(response);#}
+{#                $('#loginModal').modal('show');#}
+{#                bindFormSubmit();#}
+{#            },#}
+{#            error: function () {#}
+{#                alert('Ошибка при загрузке формы.');#}
+{#            }#}
+{#        });#}
+{#    });#}
+{#</script>#}
+
+
+{#<script>#}
+{#    // Получаем CSRF-токен из cookie#}
+{#    function getCookie(name) {#}
+{#        let cookieValue = null;#}
+{#        if (document.cookie && document.cookie !== '') {#}
+{#            const cookies = document.cookie.split(';');#}
+{#            for (let i = 0; i < cookies.length; i++) {#}
+{#                const cookie = cookies[i].trim();#}
+{#                if (cookie.substring(0, name.length + 1) === (name + '=')) {#}
+{#                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));#}
+{#                    break;#}
+{#                }#}
+{#            }#}
+{#        }#}
+{#        return cookieValue;#}
+{#    }#}
+{##}
+{#    const csrftoken = getCookie('csrftoken');#}
+{##}
+{#    // Автоматически добавляем CSRF во все POST-запросы#}
+{#    $.ajaxSetup({#}
+{#        beforeSend: function (xhr, settings) {#}
+{#            if (!(/^GET|HEAD|OPTIONS|TRACE$/i.test(settings.type))) {#}
+{#                xhr.setRequestHeader("X-CSRFToken", csrftoken);#}
+{#            }#}
+{#        }#}
+{#    });#}
+{##}
+{#    $('#logModal3').click(function (event) {#}
+{#        event.preventDefault();#}
+{##}
+{#        let loginUrl = $(this).data('url');#}
+{##}
+{#        function bindFormSubmit() {#}
+{#            $('#loginModal form').submit(function (event) {#}
+{#                event.preventDefault();#}
+{##}
+{#                let formData = $(this).serialize();#}
+{##}
+{#                $.ajax({#}
+{#                    url: loginUrl,#}
+{#                    type: 'POST',#}
+{#                    data: formData,#}
+{#                    dataType: 'json',#}
+{#                    success: function (response) {#}
+{#                        if (response.success) {#}
+{#                            location.reload();#}
+{#                        } else {#}
+{#                            $('#loginModal .modal-body').html(response.html);#}
+{#                            bindFormSubmit();#}
+{#                        }#}
+{#                    },#}
+{#                    error: function () {#}
+{#                        alert('Ошибка при входе в систему.');#}
+{#                    }#}
+{#                });#}
+{#            });#}
+{#        }#}
+{##}
+{#        $.ajax({#}
+{#            url: loginUrl,#}
+{#            type: 'GET',#}
+{#            success: function (response) {#}
+{#                $('#loginModal .modal-body').html(response);#}
+{#                $('#loginModal').modal('show');#}
+{#                bindFormSubmit();#}
+{#            },#}
+{#            error: function () {#}
+{#                alert('Ошибка при загрузке формы.');#}
+{#            }#}
+{#        });#}
+{#    });#}
+{##}
+{#</script>#}
+
+
+{#''' #}
+{#ХОРОШИЙ ПРИМЕР:#}
+{#https://pocoz.gitbooks.io/django-v-primerah/content/glava-4-sozdanie-social-website/ispolzovanie-django-authentication-framework/sozdanie-log-in-view.html#}
+{##}
+{#https://ru.stackoverflow.com/questions/1602265/%d0%9a%d0%b0%d0%ba-%d0%be%d1%82%d0%be%d0%b1%d1%80%d0%b0%d0%b6%d0%b0%d1%82%d1%8c-%d1%84%d0%be%d1%80%d0%bc%d1%83-%d0%b2-%d0%bc%d0%be%d0%b4%d0%b0%d0%bb%d1%8c%d0%bd%d0%be%d0%bc-%d0%be%d0%ba%d0%bd%d0%b5-%d0%bf%d1%80%d0%b8-%d0%b2%d0%b2%d0%be%d0%b4%d0%b5-%d0%bd%d0%b5%d0%ba%d0%be%d1%80%d1%80%d0%b5%d0%ba%d1%82%d0%bd%d1%8b%d1%85-%d0%b4%d0%b0%d0%bd%d0%bd%d1%8b%d1%85#}
+{#'''#}
+
+{#Отличный видеоурок по Login !!!#}
+{#https://www.youtube.com/watch?v=0jNnU8h2Oz8&list=PLA0M1Bcd0w8xO_39zZll2u1lz_Q-Mwn1F#}
+{#https://proproprogs.ru/django/delaem-avtorizaciyu-polzovateley-na-sayte#}

@@ -1,0 +1,114 @@
+{% extends 'userQueryAjax/home2.html' %}
+
+{% block content %}
+
+  <style>
+    .container {
+        padding: 1.6rem;
+    }
+
+    .sign-up {
+        display: none; {#Для того, чтобы спрятать форму !#}
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        min-height: 100%;
+        overflow: auto;
+        background-color: black;
+        padding-top: 5rem;
+    }
+
+    .sign-up-content {
+        background-color: white;
+        margin: 5% auto 15% auto;
+        width: 50%;
+        border: .1rem solid grey;
+    }
+  </style>
+
+
+  <script>
+      async function handleFormSubmit(event) {
+          event.preventDefault();
+          const form = event.target;
+          const formData = new FormData(form);
+
+          const response = await fetch(form.action, {
+              method: 'POST',
+              body: formData,
+              headers: {
+                  'X-Requested-With': 'XMLHttpRequest',
+              },
+          });
+
+          const result = await response.json();
+
+          const errorContainer = document.getElementById('error-container');
+          errorContainer.innerHTML = ''; // Очистка ошибок
+
+          if (!result.success) {
+              for (const [field, messages] of Object.entries(result.errors)) {
+                  const error = document.createElement('div');
+                  {#error.textContent = `${field}: ${messages.join(', ')}`; // можно так !#}
+                  error.textContent = `${messages.join(', ')}`;
+                  error.style.color = 'red';
+                  errorContainer.appendChild(error);
+              }
+          } else {
+              alert('Вы успешно зарегистрированы!');
+              form.reset();
+          }
+      }
+  </script>
+
+  <div class="sign-up" id="sign-up">
+{#      <div id="error-container"></div>#}
+
+      <form id="register-form" class="sign-up-content" action="{% url 'register' %}" method="post"
+            onsubmit="handleFormSubmit(event)">
+        <h3>Регистрация</h3>
+        <hr>
+        <div id="error-container"></div>
+
+        <div class="container">
+
+          {% csrf_token %}
+
+            {{ form.as_p }}
+
+{#          <button type="submit">Зарегистрироваться</button>#}
+
+          <label for="#">
+            <input type="checkbox" name="remember" id="rememer" checked> Remember me
+          </label>
+
+          <p>Creating an account, you agree to our <a href="#">Terms and Privacy Policy</a></p>
+
+          <div class="buttons">
+            <button type="button" class="cancelBtn" onclick="document.getElementById('sign-up').style.display='none'">
+              Cancel
+            </button>
+            <button type="submit">Зарегистрироваться</button>
+          </div>
+        </div>
+      </form>
+
+  </div>
+
+{#  <div class="sign-up" id="sign-up">#}
+{##}
+{#    <form id="register-form" class="sign-up-content" action="{% url 'register' %}"#}
+{#          method="post" onsubmit="handleFormSubmit(event)">#}
+{#      {% csrf_token %}#}
+{##}
+{#      {{ form.as_p }}#}
+{##}
+{#      <button type="submit">Зарегистрироваться</button>#}
+{#    </form>#}
+{#    <div id="error-container"></div>#}
+{##}
+{#  </div>#}
+
+{% endblock %}

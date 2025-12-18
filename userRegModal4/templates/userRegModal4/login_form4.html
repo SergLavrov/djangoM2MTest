@@ -1,0 +1,46 @@
+
+<form action="" method="post">
+  {% csrf_token %}
+
+<!-- Ошибки не появляются, потому что форма не валидируется!
+Если ты вводишь неправильный логин/пароль, AuthenticationForm добавляет "non_field_errors"
+(например: «Пожалуйста, введите правильные имя пользователя и пароль»).
+Но в твоём шаблоне выводятся только "field.errors", иначе ошибки аутентификации просто не видны!
+Нужно добавить: -->
+
+  {% if form.non_field_errors %}
+    <div class="text-danger mb-3">{{ form.non_field_errors }}</div>
+  {% endif %}
+
+  {% for field in form %}
+    <div class="form-group mb-4">
+      <label>{{ field.label }}</label>
+      {{ field }}
+
+      {% if field.errors %}
+        <div class="text-danger">{{ field.errors }}</div>
+      {% endif %}
+    </div>
+  {% endfor %}
+
+  <button type="submit" class="btn btn-secondary">Войти</button>
+</form>
+
+
+<!-- Аналогичный рабочий ВАРИАНТ: -->
+
+{#<form method="post">#}
+{#  {% csrf_token %}#}
+{#  {{ form.non_field_errors }}#}
+{#  <div class="mb-3">#}
+{#    {{ form.username.label_tag }}#}
+{#    {{ form.username }}#}
+{#    {{ form.username.errors }}#}
+{#  </div>#}
+{#  <div class="mb-3">#}
+{#    {{ form.password.label_tag }}#}
+{#    {{ form.password }}#}
+{#    {{ form.password.errors }}#}
+{#  </div>#}
+{#  <button type="submit" class="btn btn-primary">Войти</button>#}
+{#</form>#}

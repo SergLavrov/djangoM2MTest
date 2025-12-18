@@ -1,0 +1,52 @@
+<style>
+    .form-group input {
+        width: 200px;
+        height: 35px;
+        border-radius: 10px;
+        border: 1px solid lightblue;
+    }
+</style>
+
+
+
+<form action="" method="post">
+  {% csrf_token %}
+
+  {% for field in form %}
+    <div class="form-group mb-4">
+      <label>{{ field.label }}</label>
+      {{ field }}
+
+      {% if field.errors %}
+        <div class="text-danger">{{ field.errors }}</div>
+      {% endif %}
+    </div>
+  {% endfor %}
+
+  <button type="submit" class="btn btn-secondary">Сохранить</button>
+</form>
+
+
+{#ПОЯСНЕНИЯ !!!:#}
+{#form_invalid возвращает HTML всей страницы В FormView по умолчанию form_invalid рендерит шаблон целиком. #}
+{#Для AJAX нужно вернуть только фрагмент формы. → Нужно переопределить form_invalid так, #}
+{#чтобы он возвращал render_to_string формы.#}
+{##}
+{#CSRF‑токен Ты передаёшь его через data-csrf-token, но Django сам вставляет токен в форму ({% csrf_token %}). #}
+{#AJAX достаточно взять его из СКРЫТОГО ПОЛЯ ФОРМЫ, а не из кнопки (id=regModalBtn4).#}
+{##}
+{#Проверка ошибок через response.indexOf('alert-danger') Это ненадёжно. #}
+{#Лучше проверять form.is_valid() на сервере и возвращать JSON или HTML‑фрагмент.#}
+
+
+
+
+{#2 вариант - стандартный - но здесь в модальном окне выводятся все предупреждения !!!#}
+
+{#<form action="" method="post">#}
+{#  {% csrf_token %}#}
+{##}
+{#  {{ form.as_p }}#}
+{#  #}
+{#  <button type="submit" class="btn btn-secondary">Сохранить</button>#}
+{#</form>#}
