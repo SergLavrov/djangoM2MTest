@@ -1,3 +1,15 @@
+<form action="" method="post">
+  {% csrf_token %}
+  <table>
+    {#  {{ form.as_p }}#}
+    {{ form.as_table }}
+  </table>
+
+  <button type="submit" class="btn btn-secondary btn-sm">Войти</button>
+</form>
+
+
+
 {#Для ВАРИАНТа "А"#}
 {#<form method="post" action="{% url 'login' %}">#}
 {#    {% csrf_token %}#}
@@ -18,88 +30,6 @@
 {#</form>#}
 
 
-<form action="" method="post">
-  {% csrf_token %}
-  <table>
-    {#  {{ form.as_p }}#}
-    {{ form.as_table }}
-  </table>
-
-  <button type="submit" class="btn btn-secondary btn-sm">Войти</button>
-</form>
-
-
-{#<script>#}
-{#    // Получаем CSRF-токен из cookie#}
-{#    function getCookie(name) {#}
-{#        let cookieValue = null;#}
-{#        if (document.cookie && document.cookie !== '') {#}
-{#            const cookies = document.cookie.split(';');#}
-{#            for (let i = 0; i < cookies.length; i++) {#}
-{#                const cookie = cookies[i].trim();#}
-{#                if (cookie.substring(0, name.length + 1) === (name + '=')) {#}
-{#                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));#}
-{#                    break;#}
-{#                }#}
-{#            }#}
-{#        }#}
-{#        return cookieValue;#}
-{#    }#}
-{##}
-{#    const csrftoken = getCookie('csrftoken');#}
-{##}
-{#    // Автоматически добавляем CSRF во все POST-запросы#}
-{#    $.ajaxSetup({#}
-{#        beforeSend: function (xhr, settings) {#}
-{#            if (!(/^GET|HEAD|OPTIONS|TRACE$/i.test(settings.type))) {#}
-{#                xhr.setRequestHeader("X-CSRFToken", csrftoken);#}
-{#            }#}
-{#        }#}
-{#    });#}
-{##}
-{#    $('#logModal3').click(function (event) {#}
-{#        event.preventDefault();#}
-{#        let loginUrl = $(this).data('url');#}
-{##}
-{#        function bindFormSubmit() {#}
-{#            $('#loginModal form').submit(function (event) {#}
-{#                event.preventDefault();#}
-{#                let formData = $(this).serialize();#}
-{##}
-{#                $.ajax({#}
-{#                    url: loginUrl,#}
-{#                    type: 'POST',#}
-{#                    data: formData,#}
-{#                    dataType: 'json',#}
-{#                    success: function (response) {#}
-{#                        if (response.success) {#}
-{#                            location.reload();#}
-{#                        } else {#}
-{#                            $('#loginModal .modal-body').html(response.html);#}
-{#                            bindFormSubmit();#}
-{#                        }#}
-{#                    },#}
-{#                    error: function () {#}
-{#                        alert('Ошибка при входе в систему.');#}
-{#                    }#}
-{#                });#}
-{#            });#}
-{#        }#}
-{##}
-{#        $.ajax({#}
-{#            url: loginUrl,#}
-{#            type: 'GET',#}
-{#            success: function (response) {#}
-{#                $('#loginModal .modal-body').html(response);#}
-{#                $('#loginModal').modal('show');#}
-{#                bindFormSubmit();#}
-{#            },#}
-{#            error: function () {#}
-{#                alert('Ошибка при загрузке формы.');#}
-{#            }#}
-{#        });#}
-{#    });#}
-{#</script>#}
 
 {#Для ВАРИАНТа "А"#}
 {#<script>#}

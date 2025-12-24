@@ -26,6 +26,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # path('reg/', include('userRegLog.urls')),
     # path('reg/', include('userQueryAjax.urls')),
-    path('reg/', include('userRegModal.urls')),
+    # path('reg/', include('userRegModal3.urls')),
     # path('reg/', include('userRegModal4.urls')),
+    path('reg/', include('userRegModal5.urls')),
 ]

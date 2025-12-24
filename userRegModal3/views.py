@@ -22,7 +22,7 @@ Ajax (Asynchronous JavaScript and XML) — это технология, позв
 
 
 def home_page(request):
-    return render(request, 'userRegModal/home3.html')
+    return render(request, 'userRegModal3/home3.html')
 
 # def prod_list(request):
 #     return render(request, 'userRegModal/prod_list.html')
@@ -44,7 +44,7 @@ form.save() внутри UserCreationForm автоматически вызыв�
 def reg_form(request):
     if request.method == 'GET':
         form = RegisterForm()
-        html = render_to_string('userRegModal/register_form3.html', {'form': form}, request=request)
+        html = render_to_string('userRegModal3/register_form3.html', {'form': form}, request=request)
         return JsonResponse({'html': html})
 
     elif request.method == 'POST':
@@ -58,14 +58,14 @@ def reg_form(request):
             )
             return JsonResponse({'success': True})
         else:
-            html = render_to_string('userRegModal/register_form3.html', {'form': form}, request=request)
+            html = render_to_string('userRegModal3/register_form3.html', {'form': form}, request=request)
             return JsonResponse({'success': False, 'html': html})
 
 
 def login_form(request):
     if request.method == 'GET':
         form = AuthenticationForm()
-        html = render_to_string('userRegModal/login3.html', {'form': form}, request=request)
+        html = render_to_string('userRegModal3/login3.html', {'form': form}, request=request)
         return JsonResponse({'html': html})
 
     elif request.method == 'POST':
@@ -76,7 +76,7 @@ def login_form(request):
             login(request, user)
             return JsonResponse({'success': True})
         else:
-            html = render_to_string('userRegModal/login3.html', {'form': form}, request=request)
+            html = render_to_string('userRegModal3/login3.html', {'form': form}, request=request)
             return JsonResponse({'success': False, 'html': html})
 
 

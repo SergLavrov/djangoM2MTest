@@ -44,8 +44,9 @@ INSTALLED_APPS = [
     'persons',
     'userRegLog',
     'userQueryAjax',
-    'userRegModal',
+    'userRegModal3',
     'userRegModal4',
+    'userRegModal5',
 ]
 
 MIDDLEWARE = [
