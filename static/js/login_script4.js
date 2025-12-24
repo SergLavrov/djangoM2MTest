@@ -29,13 +29,14 @@ $('#logModalBtn4').click(function (event) {
         });
     }
 
+    // Загружаем форму в модалку
     $.ajax({
         url: loginUrl,
         type: 'GET',
         success: function (response) {
             $('#loginModal .modal-body').html(response.html);
-            $('#loginModal').modal('show');
-            bindFormSubmit();
+            $('#loginModal').modal('show');   // показываем модалку
+            bindFormSubmit();                 // привязываем обработчик формы
         },
         error: function () {
             alert('Ошибка при загрузке формы.');

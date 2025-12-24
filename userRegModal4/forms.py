@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 
 # Создадим "кастомную форму" для регистрации, т.е. добавим еще свои поля в форму UserCreationForm:
 
-
 class UserAddFieldForm(UserCreationForm):     # наследуемся UserCreationForm (см. в файле views.py)
     email = forms.EmailField(required=True)   # required - значит поле обязательно для заполнения!
 

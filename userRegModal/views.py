@@ -2,7 +2,7 @@ from django.forms import fields
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from .forms import RegisterForm
-from .forms import LoginForm
+# from .forms import LoginForm
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.contrib import messages
@@ -12,7 +12,6 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 # from .forms import LoginUserForm
-from django.contrib.auth.mixins import DataMixin
 
 '''
 Ajax (Asynchronous JavaScript and XML) — это технология, позволяющая обновлять информацию на странице 
@@ -42,61 +41,105 @@ form.save() внутри UserCreationForm автоматически вызыв�
 Таким образом, ваш AJAX‑код останется прежним, а серверная часть будет гарантированно хешировать пароли.
 '''
 
-
-# 1 Вар
 def reg_form(request):
-    if request.method == 'POST':
+    if request.method == 'GET':
+        form = RegisterForm()
+        html = render_to_string('userRegModal/register_form3.html', {'form': form}, request=request)
+        return JsonResponse({'html': html})
+
+    elif request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
-            form.save()
-            # return HttpResponse("Регистрация успешна!")  # AJAX получит этот ответ
-            messages.success(request, 'Registration completed successfully! You can login to the site!')
-            return HttpResponseRedirect(reverse('home'))
-            # return JsonResponse({'success': True})
-            # return render(request, 'success.html')  # Успешная регистрация
+            # создаём пользователя
+            User.objects.create_user(
+                username=form.cleaned_data['username'],
+                email=form.cleaned_data['email'],
+                password=form.cleaned_data['password1'],
+            )
+            return JsonResponse({'success': True})
         else:
-            return render(request, 'userRegModal/register_form3.html', {'form': form})  # Ошибки
-    else:
-        form = RegisterForm()
-    return render(request, 'userRegModal/register_form3.html', {'form': form})
-
-
-# def login_form(request):
-#     if request.method == 'POST':
-#         form = AuthenticationForm(request, data=request.POST)
-#         if form.is_valid():
-#             user = form.get_user()
-#             login(request, user)
-#             return redirect('home')  # Замените 'home' на URL вашей домашней страницы
-#     else:
-#         form = AuthenticationForm()
-#     return render(request, 'userRegModal/login3.html', {'form': form})
+            html = render_to_string('userRegModal/register_form3.html', {'form': form}, request=request)
+            return JsonResponse({'success': False, 'html': html})
 
 
 def login_form(request):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
+    if request.method == 'GET':
+        form = AuthenticationForm()
+        html = render_to_string('userRegModal/login3.html', {'form': form}, request=request)
+        return JsonResponse({'html': html})
+
+    elif request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = authenticate(request, username=username, password=password)
-        # username = request.POST.get('username')
-        # password = request.POST.get('password')
-        # user = authenticate(request, username=username, password=password)
+            # авторизация пользователя
+            user = form.get_user()
+            login(request, user)
+            return JsonResponse({'success': True})
+        else:
+            html = render_to_string('userRegModal/login3.html', {'form': form}, request=request)
+            return JsonResponse({'success': False, 'html': html})
 
-            if user is not None:
-                login(request, user)
-                return HttpResponse("OK")
-                # return HttpResponseRedirect(reverse('home'))
-                # return HttpResponseRedirect(reverse('profile'))
 
-        # < !-- если пользователь с таким именем/паролем НЕ существует -->
-        # return HttpResponseRedirect(reverse('home'))
+def logout_user(request):
+    logout(request)
+    return redirect('home')
+    # return HttpResponseRedirect(reverse('home'))
 
-    else:
-        form = LoginForm()
-    return render(request, 'userRegModal/login3.html', {'form': form})
-        # return HttpResponseRedirect(reverse('home'))
+
+# # 1 Вар
+# # def reg_form(request):
+# #     if request.method == 'POST':
+# #         form = RegisterForm(request.POST)
+# #         if form.is_valid():
+# #             form.save()
+# #             # return HttpResponse("Регистрация успешна!")  # AJAX получит этот ответ
+# #             # messages.success(request, 'Registration completed successfully! You can login to the site!')
+# #             return HttpResponseRedirect(reverse('home'))
+# #             # return JsonResponse({'success': True})
+# #             # return render(request, 'success.html')  # Успешная регистрация
+# #         else:
+# #             return render(request, 'userRegModal/register_form3.html', {'form': form})  # Ошибки
+# #     else:
+# #         form = RegisterForm()
+# #     return render(request, 'userRegModal/register_form3.html', {'form': form})
+#
+#
+# # def login_form(request):
+# #     if request.method == 'POST':
+# #         form = AuthenticationForm(request, data=request.POST)
+# #         if form.is_valid():
+# #             user = form.get_user()
+# #             login(request, user)
+# #             return redirect('home')  # Замените 'home' на URL вашей домашней страницы
+# #     else:
+# #         form = AuthenticationForm()
+# #     return render(request, 'userRegModal/login3.html', {'form': form})
+#
+#
+# def login_form(request):
+#     if request.method == 'POST':
+#         form = LoginForm(request.POST)
+#         if form.is_valid():
+#             username = form.cleaned_data['username']
+#             password = form.cleaned_data['password']
+#             user = authenticate(request, username=username, password=password)
+#         # username = request.POST.get('username')
+#         # password = request.POST.get('password')
+#         # user = authenticate(request, username=username, password=password)
+#
+#             if user is not None:
+#                 login(request, user)
+#                 return HttpResponse("OK")
+#                 # return HttpResponseRedirect(reverse('home'))
+#                 # return HttpResponseRedirect(reverse('profile'))
+#
+#         # < !-- если пользователь с таким именем/паролем НЕ существует -->
+#         # return HttpResponseRedirect(reverse('home'))
+#
+#     else:
+#         form = LoginForm()
+#     return render(request, 'userRegModal/login3.html', {'form': form})
+#         # return HttpResponseRedirect(reverse('home'))
 
 
 
@@ -179,19 +222,6 @@ def login_form(request):
 #                                 {"form": form}).content.decode("utf-8")
 #         })
 
-# ВАРИАНТ "C"
-# class LoginUser(DataMixin, LoginView):
-#     form_class = LoginUserForm
-#     template_name = 'userRegModal/login3.html'
-#
-#     def get_context_data(self, *, object_list=None, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         # c_def = self.get_user_context(title="Login")
-#         return dict(list(context.items()))
-#
-#     def get_success_url(self):
-#         return reverse_lazy('home')
-
 
 # def login_form(request):
 #     form = AuthenticationForm(data=request.POST or None)
@@ -260,7 +290,4 @@ https://ru.stackoverflow.com/questions/1602265/%d0%9a%d0%b0%d0%ba-%d0%be%d1%82%d
 #     return JsonResponse({"success": False, "error": "Неверный метод запроса"})
 
 
-def logout_user(request):
-    logout(request)
-    return redirect('home')
-    # return HttpResponseRedirect(reverse('home'))
+
